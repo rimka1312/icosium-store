@@ -1,29 +1,30 @@
-// ✅ الكود الجديد
+// ---------------------------------------------------
+// ملف script.js الصحيح (بعد إصلاح خطأ 'import')
+// ---------------------------------------------------
 
 // الخطوة 1: احصل على "createClient" من المتغير العالمي "supabase"
-const { createClient } = policy1;
+// (هذا المتغير "supabase" جاء من السكريبت الذي أضفناه في index.html)
+const { createClient } = supabase;
 
-// الخطوة 2: مفاتيحك الخاصة (تبقى كما هي)
-const SUPABASE_URL = 'https://vhrvdkaqlrwplkdgwwkl.supabase.co'; // ⬅️ تأكد أنها مفاتيحك
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZocnZka2FxbHJ3cGxrZGd3d2tsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzOTUyMTAsImV4cCI6MjA3ODk3MTIxMH0.mNAn3qo48y46FDkDOqUVt1xwN2smFMZL1lBNbT0OkTA'; // ⬅️ تأكد أنها مفاتيحك
+// الخطوة 2: مفاتيحك الخاصة (استبدلها من حسابك)
+const SUPABASE_URL = 'https://vhrvdkaqlrwplkdgwwkl.supabase.co'; // ⬅️ غيّر هذا
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZocnZka2FxbHJ3cGxrZGd3d2tsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzOTUyMTAsImV4cCI6MjA3ODk3MTIxMH0.mNAn3qo48y46FDkDOqUVt1xwN2smFMZL1lBNbT0OkTA'; // ⬅️ غيّر هذا
 
-// الخطوة 3: إنشاء "العميل" باسم جديد (لتجنب تضارب الأسماء)
-// غيّرنا "supabase" إلى "supabaseClient"
-const policy1 = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// الخطوة 3: إنشاء "العميل" باسم جديد "supabaseClient"
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // لنختبره!
-console.log('Supabase client is ready!', policy1);
+console.log('Supabase client is ready!', supabaseClient);
 
-// ... (الكود السابق يبقى كما هو) ...
 
-// دالة (Function) لجلب وعرض المنتجات
+// --- دالة جلب وعرض المنتجات ---
+
 async function getProducts() {
     console.log('Fetching products...');
-
-    // هذا هو السطر الذي يطلب من Supabase:
-    // "اختر كل شيء (*) من جدول Products"
-   let { data: products, error } = await policy1 // ⬅️ غيّرنا هذا الاسم
-    .from('Products')
+    
+    // الخطوة 4: استخدام اسم العميل الجديد "supabaseClient" هنا
+    let { data: products, error } = await supabaseClient
+        .from('Products')
         .select('*');
 
     if (error) {
@@ -34,24 +35,18 @@ async function getProducts() {
     // وجدنا المنتجات!
     console.log('Products found:', products);
 
-    // الآن، دعنا نعرضها في الصفحة
-    // ابحث عن الـ div الذي حضّرناه في HTML
     const productsGrid = document.getElementById('products-grid');
+    productsGrid.innerHTML = ''; 
 
-    // من أجل كل منتج وجدناه...
     for (let product of products) {
-        // ... أنشئ عنصر HTML جديد
         const productCard = document.createElement('div');
-        productCard.classList.add('product-card'); // (سنضيف الستايل لهذا لاحقاً في style.css)
+        productCard.classList.add('product-card'); 
 
-        // أضف اسم المنتج والسعر
         productCard.innerHTML = `
             <h3>${product.name}</h3>
             <p>${product.price} DZD</p>
-            <img src="${product.image_url}" alt="${product.name}" width="100">
         `;
-
-        // أضف البطاقة الجديدة إلى الشبكة
+        
         productsGrid.appendChild(productCard);
     }
 }
