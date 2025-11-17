@@ -1,17 +1,18 @@
-// الخطوة 1: استيراد مكتبة Supabase
-// نحن نستخدم "CDN" لجلبها مباشرة من الإنترنت
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+// ✅ الكود الجديد
 
-// الخطوة 2: وضع مفاتيحك الخاصة (استبدلها من حسابك)
-const SUPABASE_URL = 'https://vhrvdkaqlrwplkdgwwkl.supabase.co'; // ⬅️ غيّر هذا
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZocnZka2FxbHJ3cGxrZGd3d2tsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzOTUyMTAsImV4cCI6MjA3ODk3MTIxMH0.mNAn3qo48y46FDkDOqUVt1xwN2smFMZL1lBNbT0OkTA'; // ⬅️ غيّر هذا
+// الخطوة 1: احصل على "createClient" من المتغير العالمي "supabase"
+const { createClient } = policy1;
 
-// الخطوة 3: إنشاء "العميل" الذي سيتحدث مع قاعدة البيانات
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// الخطوة 2: مفاتيحك الخاصة (تبقى كما هي)
+const SUPABASE_URL = 'https://vhrvdkaqlrwplkdgwwkl.supabase.co'; // ⬅️ تأكد أنها مفاتيحك
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZocnZka2FxbHJ3cGxrZGd3d2tsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzOTUyMTAsImV4cCI6MjA3ODk3MTIxMH0.mNAn3qo48y46FDkDOqUVt1xwN2smFMZL1lBNbT0OkTA'; // ⬅️ تأكد أنها مفاتيحك
+
+// الخطوة 3: إنشاء "العميل" باسم جديد (لتجنب تضارب الأسماء)
+// غيّرنا "supabase" إلى "supabaseClient"
+const policy1 = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // لنختبره!
-console.log('Supabase client is ready!', supabase);
-
+console.log('Supabase client is ready!', policy1);
 
 // ... (الكود السابق يبقى كما هو) ...
 
@@ -21,8 +22,8 @@ async function getProducts() {
 
     // هذا هو السطر الذي يطلب من Supabase:
     // "اختر كل شيء (*) من جدول Products"
-    let { data: products, error } = await supabase
-        .from('Products')
+   let { data: products, error } = await policy1 // ⬅️ غيّرنا هذا الاسم
+    .from('Products')
         .select('*');
 
     if (error) {
